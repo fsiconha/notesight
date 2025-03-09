@@ -1,9 +1,8 @@
-import json
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import NoteForm
 from .models import Note
 from .services.elasticsearch_service import search_notes, index_note
+from .services.llm_service import get_insights_from_notes
 
 def note_interface(request):
     """
@@ -50,4 +49,15 @@ def note_detail_ajax(request, pk):
         'created_at': note.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         'updated_at': note.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
     }
+    from django.http import JsonResponse
     return JsonResponse(data)
+
+
+def note_insights(request):
+    """
+    Retrieves all notes, calls the LLM service to generate insights,
+    and renders a template displaying the insights.
+    """
+    notes = Note.objects.all().order_by('-created_at')
+    insights = get_insights_from_notes(notes)
+    return render(request, 'diary/note_insights.html', {'insights': insights})
