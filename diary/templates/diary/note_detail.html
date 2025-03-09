@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ note.title }}</title>
+</head>
+<body>
+    <h1>{{ note.title }}</h1>
+    <p>{{ note.content }}</p>
+    <p><em>Created at:</em> {{ note.created_at }}</p>
+    <p><em>Updated at:</em> {{ note.updated_at }}</p>
+    <a href="{% url 'note_interface' %}">Back to Notes</a>
+</body>
+</html>

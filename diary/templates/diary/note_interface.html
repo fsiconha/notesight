@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diary Notes</title>
+    <!-- Bootstrap CSS (you can adjust the version or use your own CSS) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Diary</h1>
+
+        <!-- Form to create a new note -->
+        <h2>Create a New Note</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Save Note</button>
+        </form>
+
+        <!-- Form to search notes (text search) -->
+        <h2>Search Notes</h2>
+        <form method="get" class="mb-4">
+            <div class="form-group">
+                <input type="text" name="q" class="form-control" placeholder="Search notes..." value="{{ query }}">
+            </div>
+            <button type="submit" class="btn btn-secondary">Search</button>
+        </form>
+
+        <!-- Search by Note ID to display in a pop-up -->
+        <h2>View Note by ID</h2>
+        <div class="form-inline mb-4">
+            <input type="text" id="noteIndex" class="form-control mr-2" placeholder="Enter Note ID">
+            <button type="button" id="searchNoteButton" class="btn btn-info">View Note</button>
+        </div>
+
+        <!-- Display list of notes -->
+        <h2>Notes List</h2>
+        <ul class="list-group">
+            {% for note in notes %}
+                <li class="list-group-item">
+                    <a href="{% url 'note_detail' note.pk %}">{{ note.title }}</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No notes found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Modal for displaying note details -->
+    <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="noteModalLabel">Note Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 id="modalNoteTitle"></h2>
+            <p id="modalNoteContent"></p>
+            <p><em id="modalNoteCreated"></em></p>
+            <p><em id="modalNoteUpdated"></em></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS (ensure these are loaded) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to fetch note details and display modal -->
+    <script>
+        $(document).ready(function(){
+            $('#searchNoteButton').click(function(){
+                var noteId = $('#noteIndex').val();
+                if (noteId) {
+                    $.ajax({
+                        url: '/notes/' + noteId + '/json/',
+                        method: 'GET',
+                        success: function(data) {
+                            $('#modalNoteTitle').text(data.title);
+                            $('#modalNoteContent').text(data.content);
+                            $('#modalNoteCreated').text("Created at: " + data.created_at);
+                            $('#modalNoteUpdated').text("Updated at: " + data.updated_at);
+                            $('#noteModal').modal('show');
+                        },
+                        error: function() {
+                            alert('Note not found or an error occurred.');
+                        }
+                    });
+                } else {
+                    alert('Please enter a valid Note ID.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
