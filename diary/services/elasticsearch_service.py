@@ -1,10 +1,8 @@
-# notesight/notes/services/elasticsearch_service.py
-
 from datetime import datetime
 
 from django.conf import settings
-from notes.models import Note
-from notes.elasticsearch_client import es
+from diary.models import Note
+from diary.elasticsearch_client import es
 
 INDEX_NAME = "notes"
 
@@ -41,7 +39,7 @@ def index_note(note: Note):
         )
     }
     # Use note.pk as the document ID for easy updates/deletes later.
-    es.index(index=INDEX_NAME, id=note.pk, document=doc)
+    es.index(index=INDEX_NAME, id=note.pk, document=doc, refresh=True)
 
 
 def update_note_index(note: Note):
