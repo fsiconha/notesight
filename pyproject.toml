@@ -1,6 +1,7 @@
 [project]
 name = "notesight"
 version = "0.1.0"
+package-mode = false
 description = ""
 authors = [
     {name = "Felipe Siconha",email = "felipesiconha@gmail.com"}
@@ -8,9 +9,13 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "django (>=5.1.7,<6.0.0)"
+    "django (>=5.1.7,<6.0.0)",
+    "elasticsearch (>=8.17.2,<9.0.0)"
 ]
 
+packages = [
+    { include = "notesight" }
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
