@@ -21,11 +21,11 @@ def get_insights_from_notes(notes):
     """
     # Define the prompt template for our personal assistant.
     prompt_template = (
-        "You are a personal assistant that helps organize and provide insights about a user's notes. "
-        "Analyze the following notes and provide a summary with insights and suggestions on how to organize "
-        "and improve them:\n\n"
-        "{notes}\n"
-        "Please provide your insights."
+        "You are a personal assistant that helps organize and improve a user's notes. "
+        "Below are several notes with titles and contents. Please analyze them and provide a concise summary "
+        "that includes at least one actionable insight or suggestion on how to better organize and improve the notes. \n\n"
+        "{notes}\n\n"
+        "Your response should be clear and in plain language."
     )
 
     # Combine notes into a single string.
@@ -51,7 +51,7 @@ def get_insights_from_notes(notes):
     llm = HuggingFaceHub(
         repo_id="gpt2",
         huggingfacehub_api_token=hf_api_token,
-        model_kwargs={"temperature": 0.7}
+        model_kwargs={"temperature": 0.7, "max_length": 256}
     )
 
     # Create an LLM chain with the prompt template.
