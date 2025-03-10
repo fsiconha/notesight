@@ -12,7 +12,8 @@ dependencies = [
     "django (>=5.1.7,<6.0.0)",
     "elasticsearch (>=8.17.2,<9.0.0)",
     "langchain (>=0.3.20,<0.4.0)",
-    "langchain-community (>=0.3.19,<0.4.0)"
+    "langchain-community (>=0.3.19,<0.4.0)",
+    "django-environ (>=0.12.0,<0.13.0)"
 ]
 
 packages = [
