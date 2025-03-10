@@ -6,7 +6,8 @@ from .services.llm_service import get_insights_from_notes
 
 def note_interface(request):
     """
-    Renders a page where users can create a new note and search for existing notes.
+    Renders a page where users can create new notes, search existing notes,
+    and access LLM insights.
     """
     query = request.GET.get('q', '')
     form = NoteForm()
@@ -29,14 +30,12 @@ def note_interface(request):
     }
     return render(request, 'diary/note_interface.html', context)
 
-
 def note_detail(request, pk):
     """
     Retrieves and displays a single note based on its primary key.
     """
     note = get_object_or_404(Note, pk=pk)
     return render(request, 'diary/note_detail.html', {'note': note})
-
 
 def note_detail_ajax(request, pk):
     """
@@ -51,7 +50,6 @@ def note_detail_ajax(request, pk):
     }
     from django.http import JsonResponse
     return JsonResponse(data)
-
 
 def note_insights(request):
     """
