@@ -113,4 +113,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Elasticsearch settings example (update as needed)
 ELASTICSEARCH_HOSTS = ["http://localhost:9200"]
 
-HUGGINGFACEHUB_API_TOKEN = env('HUGGINGFACEHUB_API_TOKEN')
+HUGGINGFACEHUB_API_TOKEN = env("HUGGINGFACEHUB_API_TOKEN")
