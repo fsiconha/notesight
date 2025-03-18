@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from elasticsearch import Elasticsearch, ConnectionError
 from django.conf import settings
 from diary.models import Note
 from diary.elasticsearch_client import es
@@ -78,8 +79,13 @@ def search_notes(query: str, top_k: int = 5):
         },
         "size": top_k
     }
-    results = es.search(index=INDEX_NAME, body=search_query)
+    try:
+        results = es.search(index=INDEX_NAME, body=search_query)
+    except ConnectionError as e:
+        # Log the error, return an empty queryset, or handle appropriately
+        print("Error connecting to Elasticsearch:", e)
+        return []
+    
     note_ids = [hit["_id"] for hit in results["hits"]["hits"]]
-    # Convert IDs to integers (if your model uses integer IDs)
     note_ids = [int(nid) for nid in note_ids]
     return Note.objects.filter(pk__in=note_ids)
