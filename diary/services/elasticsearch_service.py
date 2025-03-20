@@ -1,12 +1,14 @@
 from datetime import datetime
+import warnings
 
-from elasticsearch import Elasticsearch, ConnectionError
+from elasticsearch import  ConnectionError, Elasticsearch, ElasticsearchWarning
 from django.conf import settings
 from diary.models import Note
 from diary.elasticsearch_client import es
 
 INDEX_NAME = "notes"
 
+warnings.filterwarnings("ignore", category=ElasticsearchWarning)
 
 def create_index():
     """

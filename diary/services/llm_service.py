@@ -1,6 +1,8 @@
 import os
-from langchain import PromptTemplate, HuggingFaceHub, LLMChain
-from langchain.llms import HuggingFaceHub
+from langchain_core.prompts import PromptTemplate
+from langchain_community.llms.huggingface_hub import HuggingFaceHub
+from langchain.chains import LLMChain
+from huggingface_hub.utils import HfHubHTTPError
 
 def extract_insights(response):
     """
