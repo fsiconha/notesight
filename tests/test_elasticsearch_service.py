@@ -1,9 +1,9 @@
+import pytest
 from django.test import TestCase
 from diary.models import Note
 from diary.services.elasticsearch_service import (
     create_index, index_note, search_notes, delete_note_index
 )
-
 
 class ElasticsearchServiceTestCase(TestCase):
     def setUp(self):
